@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:format12Hour="HH:mm"
                 android:format24Hour="HH:mm"
-                android:textSize="27sp"
+                android:textSize="34sp"
                 android:textStyle="bold"
                 android:textColor="#1D1B20"/>
 
@@ -34,14 +34,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Вт, 11 авг."
-                android:textSize="12sp"
-                android:textColor="#49454F"/>
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1D1B20"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/widget_weather_icon"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:src="@drawable/ic_weather_widget"
             android:contentDescription="@null"/>
     </LinearLayout>
@@ -52,16 +53,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="Харьков"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"
-        android:textColor="#49454F"/>
+        android:textColor="#1D1B20"/>
 
     <TextView
         android:id="@+id/widget_temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+24°C"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#1D1B20"/>
 
@@ -78,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="USD 41.25"
-            android:textSize="13sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#1D1B20"/>
 
@@ -89,7 +90,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="EUR 48.15"
-            android:textSize="13sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#1D1B20"/>
     </LinearLayout>
