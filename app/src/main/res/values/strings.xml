@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Погода и курсы</string>
+    <string name="widget_description">Время, погода и курсы валют</string>
+</resources>

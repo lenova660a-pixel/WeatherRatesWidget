@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextClock
+                android:id="@+id/widget_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format12Hour="HH:mm"
+                android:format24Hour="HH:mm"
+                android:textSize="27sp"
+                android:textStyle="bold"
+                android:textColor="#1D1B20"/>
+
+            <TextView
+                android:id="@+id/widget_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вт, 11 авг."
+                android:textSize="12sp"
+                android:textColor="#49454F"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/widget_weather_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_weather_widget"
+            android:contentDescription="@null"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/widget_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Харьков"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#49454F"/>
+
+    <TextView
+        android:id="@+id/widget_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+24°C"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#1D1B20"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widget_usd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="USD 41.25"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#1D1B20"/>
+
+        <TextView
+            android:id="@+id/widget_eur"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="EUR 48.15"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#1D1B20"/>
+    </LinearLayout>
+</LinearLayout>
