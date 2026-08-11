@@ -62,11 +62,15 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) :
         for (i in 0 until arr.length()) {
             val entry = arr.getJSONObject(i)
             when (entry.getString("ccy")) {
-                "USD" -> AppPrefs.setUsd(entry.getString("sale"))
-                "EUR" -> AppPrefs.setEur(entry.getString("sale"))
+                "USD" -> AppPrefs.setUsd(formatRate(entry.getString("sale")))
+                "EUR" -> AppPrefs.setEur(formatRate(entry.getString("sale")))
             }
         }
     }
+
+    // ponytail: PrivatBank returns 5 decimal places ("45.05000"); round to the
+    // 2 the widget actually displays instead of showing the raw string.
+    private fun formatRate(raw: String) = String.format("%.2f", raw.toDouble())
 
     private fun read(url: URL): org.json.JSONObject =
         org.json.JSONObject(readText(url))
