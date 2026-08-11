@@ -15,40 +15,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.work.*
-import java.util.concurrent.TimeUnit
+import java.text.DateFormat
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scheduleUpdates()
+        // Periodic background updates are scheduled once in WeatherRatesApp.onCreate,
+        // so they keep running even for users who never open this screen.
         setContent {
             MaterialTheme {
                 MainScreen()
             }
         }
     }
-
-    private fun scheduleUpdates() {
-        val request = PeriodicWorkRequestBuilder<UpdateWorker>(15, TimeUnit.MINUTES)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-            )
-            .build()
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "weather_rates_update",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            request
-        )
-    }
 }
 
 @Composable
 private fun MainScreen() {
-    var city by remember { mutableStateOf("Харьков") }
+    var city by remember { mutableStateOf(AppPrefs.getCity()) }
     var status by remember { mutableStateOf("Данные будут загружены автоматически") }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -122,6 +107,19 @@ private fun MainScreen() {
                         Text("EUR: ${AppPrefs.getEur().ifBlank { "—" }}")
                     }
                 }
+            }
+
+            val lastUpdate = AppPrefs.getLastUpdateMillis()
+            if (lastUpdate > 0) {
+                val time = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(lastUpdate))
+                Text("Обновлено: $time", style = MaterialTheme.typography.bodySmall)
+            }
+            AppPrefs.getLastError()?.let { error ->
+                Text(
+                    "Не удалось обновить: $error",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
 
             Text(status, style = MaterialTheme.typography.bodySmall)

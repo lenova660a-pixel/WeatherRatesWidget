@@ -19,10 +19,15 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) :
         updateWeather()
         updateRate("USD") { AppPrefs.setUsd(it) }
         updateRate("EUR") { AppPrefs.setEur(it) }
+        AppPrefs.setLastUpdateMillis(System.currentTimeMillis())
+        AppPrefs.setLastError(null)
         WeatherWidgetProvider.updateAll(applicationContext)
         Result.success()
-    } catch (_: Exception) {
-        Result.retry()
+    } catch (e: Exception) {
+        AppPrefs.setLastError(e.message ?: e.javaClass.simpleName)
+        // ponytail: cap retries at 3 instead of retrying forever on a persistent
+        // failure (e.g. bad city name). Next periodic run (15 min) picks it back up.
+        if (runAttemptCount < 3) Result.retry() else Result.failure()
     }
 
     private suspend fun updateWeather() = withContext(Dispatchers.IO) {

@@ -21,6 +21,14 @@ object AppPrefs {
     fun getUsd(): String = p.getString("usd", "") ?: ""
 
     fun setEur(value: String) { p.edit().putString("eur", value).apply() }
+    fun getEur(): String = p.getString("eur", "") ?: ""
+
     fun setWeatherCode(value: Int) { p.edit().putInt("weather_code", value).apply() }
     fun getWeatherCode(): Int = p.getInt("weather_code", 0)
+
+    fun setLastUpdateMillis(value: Long) { p.edit().putLong("last_update", value).apply() }
+    fun getLastUpdateMillis(): Long = p.getLong("last_update", 0L)
+
+    fun setLastError(message: String?) { p.edit().putString("last_error", message).apply() }
+    fun getLastError(): String? = p.getString("last_error", null)
 }
