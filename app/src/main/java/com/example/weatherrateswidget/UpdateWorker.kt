@@ -17,8 +17,7 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) :
 
     override suspend fun doWork(): Result = try {
         updateWeather()
-        updateRate("USD") { AppPrefs.setUsd(it) }
-        updateRate("EUR") { AppPrefs.setEur(it) }
+        updateRates()
         AppPrefs.setLastUpdateMillis(System.currentTimeMillis())
         AppPrefs.setLastError(null)
         WeatherWidgetProvider.updateAll(applicationContext)
@@ -53,16 +52,21 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) :
         AppPrefs.setWeatherCode(code)
     }
 
-    private suspend fun updateRate(code: String, save: (String) -> Unit) =
-        withContext(Dispatchers.IO) {
-            val url = URL(
-                "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=$code&json"
-            )
-            val arr = JSONArray(readText(url))
-            if (arr.length() > 0) {
-                save(arr.getJSONObject(0).getDouble("rate").toString())
+    // ponytail: PrivatBank returns all currencies in one response, so USD+EUR
+    // are fetched together instead of two separate requests like before.
+    // Showing "sale" (retail sell rate) only, to match the single-number
+    // format the widget already displays — not the buy/sell spread.
+    private suspend fun updateRates() = withContext(Dispatchers.IO) {
+        val url = URL("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
+        val arr = JSONArray(readText(url))
+        for (i in 0 until arr.length()) {
+            val entry = arr.getJSONObject(i)
+            when (entry.getString("ccy")) {
+                "USD" -> AppPrefs.setUsd(entry.getString("sale"))
+                "EUR" -> AppPrefs.setEur(entry.getString("sale"))
             }
         }
+    }
 
     private fun read(url: URL): org.json.JSONObject =
         org.json.JSONObject(readText(url))

@@ -55,7 +55,18 @@ private fun MainScreen() {
                 onValueChange = { city = it },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Город") },
-                singleLine = true
+                singleLine = true,
+                // ponytail: colors were left to theme defaults, which can resolve to
+                // light text on a light field under some launchers/force-dark setups.
+                // Pin them explicitly so the input is always legible.
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = androidx.compose.ui.graphics.Color(0xFF1D1B20),
+                    unfocusedTextColor = androidx.compose.ui.graphics.Color(0xFF1D1B20),
+                    focusedContainerColor = androidx.compose.ui.graphics.Color.White,
+                    unfocusedContainerColor = androidx.compose.ui.graphics.Color.White,
+                    focusedLabelColor = androidx.compose.ui.graphics.Color(0xFF49454F),
+                    unfocusedLabelColor = androidx.compose.ui.graphics.Color(0xFF49454F)
+                )
             )
 
             Button(
@@ -102,7 +113,7 @@ private fun MainScreen() {
                     Icon(Icons.Default.Cloud, contentDescription = null)
                     Spacer(Modifier.width(12.dp))
                     Column {
-                        Text("Курсы НБУ", style = MaterialTheme.typography.titleMedium)
+                        Text("Курсы ПриватБанк", style = MaterialTheme.typography.titleMedium)
                         Text("USD: ${AppPrefs.getUsd().ifBlank { "—" }}")
                         Text("EUR: ${AppPrefs.getEur().ifBlank { "—" }}")
                     }
